@@ -1,28 +1,22 @@
 var cancelTimer = false;
 var timerRunning = false;
+var timerInterval;
+var timerEl = document.querySelector(".timer");
 
 function startTimer(seconds) {
   var timerEl = document.querySelector(".timer");
   timerEl.innerHTML = seconds;
   startBtn.setAttribute("style", "display:none");
-  timerRunning = true;
 
-  var x = setInterval(function () {
+  timerInterval = setInterval(function () {
     seconds--;
     timerEl.innerHTML = seconds;
     console.log(seconds);
-    
+
     if (seconds < 0) {
-      clearInterval(x);
+      clearInterval(timerInterval);
       timerEl.innerHTML = "END";
       console.log("END");
-      timerRunning = false;
-      startBtn.setAttribute("style", "display:initial");
-    } 
-    if ((cancelTimer === true)) {
-      clearInterval(x);
-      timerRunning = false;
-      console.log("CANCELED");
       startBtn.setAttribute("style", "display:initial");
     }
   }, 1000);
@@ -34,19 +28,14 @@ var resetBtn = document.querySelector("#resetTimer");
 startBtn.addEventListener("click", function (e) {
   e.preventDefault();
   e.stopPropagation();
-  if ((timerRunning === true)) {
-    cancelTimer = true;
-  }
-  timerRunning = true;
-  cancelTimer = false
-  setTimeout(function () {
-    startTimer(10);
-  }, 1005);
+  clearInterval(timerInterval);
+  startTimer(10);
 });
 
 resetBtn.addEventListener("click", function (e) {
-  e.preventDefault();
-  e.stopPropagation();
-  cancelTimer = true;
+  clearInterval(timerInterval);
+  startBtn.setAttribute("style", "display:initial");
+  console.log("CANCELLED");
+  timerEl.innerHTML = "CANCELLED";
   return;
 });
