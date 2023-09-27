@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Timed Javascript Fundamentals Quiz </title>
     <link rel="stylesheet" type="text/css" href="./assets/css/reset.css" />
     <link rel="stylesheet" type="text/css" href="./assets/css/style.css" />
 
@@ -16,7 +16,7 @@
     </nav>
     <main>
         <section id="startButton">
-            <p>Please press 'Start Quiz' to begin. You will have 60 seconds to complete the quiz.</p>
+            <p id="startText"></p>
             <button id="startQuiz">Start Quiz</button>
         </section>
         <section>
@@ -33,13 +33,21 @@
         </section>
         <section id="highScores">
                 <h1 id="finalScore"></h1>
-                <ul id="highScoreList">
-
-                </ul>
-                <form id="saveScore">
-
+                <div class="scoreHeader">
+                    <p>Rank</p>
+                    <p>Player</p>
+                    <p>Score</p>
+                </div>
+                <ol id="highScoreList">
+                    <!-- High Score list items are inserted here -->
+                </ol>
+                <div id="saveScore">
+                <form id="saveScoreForm">
+                    <label for="initials">Your Initials</label>
+                    <input type="text" id="initials" name="initials">
+                    <input type="submit">
                 </form>
-                <button id="submitScore">Submit Score</button>
+                </div>
                 <button id="restartQuiz">Restart Quiz</button>
             </section>
     </main>
