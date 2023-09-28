@@ -9,14 +9,15 @@
   </head>
   <body>
     <nav>
+      <h1>Javascript Fundamentals Quiz</h1>
       <button id="visitHighScores">High Scores</button>
     </nav>
     <main>
       <section id="quiz">
-        <h2 id="timer"></h2>
-        <h1 id="feedback"></h1>
+        <h3 id="timer"></h3>
+        <h2 id="feedback"></h2>
         <div id="questionContainer">
-          <h1 id="question"></h1>
+          <h2 id="question"></h2>
           <button class="answerButton" id="a"></button>
           <button class="answerButton" id="b"></button>
           <button class="answerButton" id="c"></button>
@@ -24,7 +25,7 @@
         </div>
       </section>
       <section id="highScores">
-        <h2 id="finalScore"></h2>
+        <h3 id="finalScore"></h3>
         <div id="saveScore">
           <form id="saveScoreForm">
             <label for="initials">Your Initials</label>
@@ -33,7 +34,7 @@
           </form>
         </div>
         <div class="highScoreContainer">
-          <div class="scoreHeaderContainer">
+          <div id="scoreHeaderContainer">
             <p class="rankHeader">Rank</p>
             <p class="playerHeader">Player</p>
             <p class="scoreHeader">Score</p>
@@ -48,6 +49,7 @@
         <button id="startQuiz">Take Quiz</button>
       </section>
     </main>
+    <!-- make sure to load the questions first as it is referenced by the script file.  -->
     <script src="./assets/js/questions.js"></script>
     <script src="./assets/js/script.js"></script>
   </body>

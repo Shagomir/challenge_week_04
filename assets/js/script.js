@@ -9,7 +9,7 @@ var score;
 var bonus;
 var highScoreList = [];
 
-//player object for High Score list
+// initialize player object for High Score list
 var player = {
   totalScore: 0,
   initials: "",
@@ -30,6 +30,7 @@ var startTextEl = document.querySelector("#startText");
 var saveScoreEl = document.querySelector("#saveScore");
 var highScoreListEl = document.querySelector("#highScoreList");
 var questionContainerEl = document.querySelector("#questionContainer");
+var scoreHeaderContainerEl = document.querySelector("#scoreHeaderContainer")
 
 // button selectors
 var startBtn = document.querySelector("#startQuiz");
@@ -82,8 +83,8 @@ function showStart() {
 
 // set instructions to start text with quiz timer variable.
 function setStartText() {
-  startTextEl.textContent =
-    "Welcome to the Javascript basic knowledge quiz. Please press 'Take Quiz' to begin. You will have " +
+  startTextEl.innerHTML =
+    "Welcome to the Javascript Fundamentals basic knowledge quiz. Please press 'Take Quiz' to begin. <br> You will have " +
     quizTimer +
     " seconds to complete the quiz.";
 }
@@ -112,7 +113,7 @@ function endQuiz() {
   hideQuiz();
   showStart();
   showScores();
-  displayScoreList();
+  updateScoreList();
 
   // mark player as completing the quiz
   player.complete = true;
@@ -162,7 +163,7 @@ function nextQuestion() {
 
 // This gets passed a true or false value showing if the question was answered correctly.
 // It displays feedback, increments the score, hides the quiz to prevent excess inputs,
-// and then shows the quiz again after two seconds.
+// and then shows the quiz again after answerDelay number of seconds.
 
 function answerQuestion(outcome) {
   if (outcome) {
@@ -222,6 +223,14 @@ function displayScoreList() {
     li.setAttribute("data-index", i);
     highScoreListEl.appendChild(li);
   }
+  // we give the end of the high score list special border properties.
+  if (highScoreListEl.lastChild !== null) {
+    highScoreListEl.lastChild.setAttribute("class", "last");
+    scoreHeaderContainerEl.setAttribute("class", "")
+  } else {
+    document
+      scoreHeaderContainerEl.setAttribute("class", "last");
+  }
 }
 
 // add player score to high score list if they have completed the quiz.
@@ -248,24 +257,25 @@ function updateScoreList() {
 function submitInitials(event) {
   event.preventDefault();
   var initials = document.querySelector("#initials").value;
-  // console.log(initials);
   player.initials = initials.substring(0, 3).toUpperCase(); // we want 3 uppercase characters
-  // console.log(player.initials);
   updateScoreList();
-  document.querySelector("#initials").value = ""; // reset form
-  player.complete = false; // update player state and hide form.
-  showSaveScore();
+  document.querySelector("#initials").value = ""; // reset form for next submission.
+  player.complete = false; // update player state to prevent duplicate entries.
+  showSaveScore(); // hides the form since we only need to submit once.
 }
 
 // timer for the quiz. If the timer runs out, the quiz will end.
 // calculates the potential bonus score for a full clear as well.
 function timer() {
   var seconds = quizTimer;
+  // Update display before interval is set.
+  // If not present, there is an awkward delay in the timer appearing.
+  timerEl.innerHTML = "Time remaining: " + seconds + " seconds.";
   timerInterval = setInterval(function () {
-    timerEl.innerHTML = "Time remaining: " + seconds + " seconds.";
     seconds--;
-    bonus = Math.floor(seconds + answerDelay); // padding bonus to make up for the delay after answering a question. Rounds down.
-
+    // padding bonus to make up for the delay after answering a question. Rounds down.
+    bonus = Math.floor(seconds + answerDelay);
+    timerEl.innerHTML = "Time remaining: " + seconds + " seconds.";
     // console.log(seconds);
     if (seconds < 0) {
       clearInterval(timerInterval);
@@ -281,9 +291,6 @@ function timer() {
 for (var i = 0; i < answerButtonEl.length; i++) {
   answerButtonEl[i].addEventListener("click", function () {
     var answer = this.id.toString();
-    // console.log(typeof answer, answer);
-    // console.log(typeof currentQuestion.answer, question0.answer);
-    // console.log("You Pressed Button " + this.id);
     answerQuestion(answer === currentQuestion.answer);
   });
 }
@@ -292,11 +299,6 @@ for (var i = 0; i < answerButtonEl.length; i++) {
 startBtn.addEventListener("click", function () {
   startQuiz();
 });
-
-// event listener for the reset button - it does the same as the start quiz button.
-// resetBtn.addEventListener("click", function () {
-//   startQuiz();
-// });
 
 // go directly to the high scores list from the nav. This will cancel the test if you are currently taking it.
 showScoreEl.addEventListener("click", function () {
@@ -317,4 +319,3 @@ setStartText();
 showStart();
 hideQuiz();
 hideScores();
-updateScoreList();

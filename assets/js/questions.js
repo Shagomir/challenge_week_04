@@ -19,7 +19,7 @@ var questionSelector = [
   },
   {
     question:
-      "How would the following expression be evaluated? <br> (0 && (null || 1))",
+      "How would the following expression be evaluated? <br> <span style='font-family: monospace'>(0 && (null || 1))</span>",
     a: "undefined",
     b: "null",
     c: "true",
@@ -36,7 +36,7 @@ var questionSelector = [
   },
   {
     question:
-      "How would the following expression be evaluated? <br> ('10' + 10)",
+      "How would the following expression be evaluated? <br> <span style='font-family: monospace'>('10' + 10)</span>",
     a: "20",
     b: "1010",
     c: "'10'10",
@@ -53,7 +53,7 @@ var questionSelector = [
   },
   {
     question:
-      "How would you access the value 'five' in the following array? <br> arr = [ 4, '5', 'five', five, 'six']",
+      "How would you access the value 'five' in the following array? <br> <span style='font-family: monospace'>arr = [ 4, '5', 'five', five, 'six']</span>",
     a: "arr[3]",
     b: "arr['five']",
     c: "arr.3",
@@ -78,11 +78,11 @@ var questionSelector = [
   },
   {
     question: "Which of the following will evaluate to true?",
-    a: "'5' == 5",
+    a: "10 = 10",
     b: "'five' == 5",
     c: "'10' === 10",
-    d: "10 = 10",
-    answer: "a",
+    d: "'5' == 5",
+    answer: "d",
   },
 ];
 
