@@ -79,8 +79,8 @@ var questionSelector = [
   {
     question: "Which of the following will evaluate to true?",
     a: "'5' == 5",
-    b: "'five' == five",
-    c: "'10' === 5",
+    b: "'five' == 5",
+    c: "'10' === 10",
     d: "10 = 10",
     answer: "a",
   },
