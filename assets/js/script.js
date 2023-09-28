@@ -1,8 +1,8 @@
 var quizTimer = 60; // this will update all timing related functions, edit this to adjust test duration.
-var answerDelay = 0.25; // this updates the delay for showing an answer and the padding for bonus points.
+var answerDelay = 2; // this updates the delay for showing an answer and the padding for bonus points.
 
 // initialize global variables for tracking quiz progress and score.
-// TODO put some of these in local/session storage?
+// TODO convert to a single quiz object?
 var currentQuestionIndex;
 var currentQuestion;
 var score;
@@ -29,6 +29,7 @@ var feedbackEl = document.querySelector("#feedback");
 var startTextEl = document.querySelector("#startText");
 var saveScoreEl = document.querySelector("#saveScore");
 var highScoreListEl = document.querySelector("#highScoreList");
+var questionContainerEl = document.querySelector("#questionContainer")
 
 // button selectors
 var startBtn = document.querySelector("#startQuiz");
@@ -36,78 +37,12 @@ var aBtn = document.querySelector("#a");
 var bBtn = document.querySelector("#b");
 var cBtn = document.querySelector("#c");
 var dBtn = document.querySelector("#d");
-var resetBtn = document.querySelector("#restartQuiz");
 var showScoreEl = document.querySelector("#visitHighScores");
 
 // section selectors
 var startSct = document.querySelector("#startButton");
 var quizSct = document.querySelector("#quiz");
 var scoresSct = document.querySelector("#highScores");
-
-// Question Objects
-var question0 = {
-  question: "This is a test question. C is the correct answer.",
-  a: "a wrong answer",
-  b: "a tricky, but ultimately incorrect answer",
-  c: "a correct answer",
-  d: "another incorrect answer",
-  answer: "c",
-};
-
-var question1 = {
-  question: "This is the second test question. A is the correct answer.",
-  a: "a correct answer",
-  b: "a tricky, but ultimately incorrect answer",
-  c: "a wrong answer",
-  d: "another incorrect answer",
-  answer: "a",
-};
-
-var question2 = {
-  question: "This is the third test question. D is the correct answer.",
-  a: "another incorrect answer",
-  b: "a tricky, but ultimately incorrect answer",
-  c: "a wrong answer",
-  d: "a correct answer",
-  answer: "d",
-};
-
-var question3 = {
-  question: "This is the fourth test question. C is the correct answer.",
-  a: "a wrong answer",
-  b: "a tricky, but ultimately incorrect answer",
-  c: "a correct answer",
-  d: "another incorrect answer",
-  answer: "c",
-};
-
-var question4 = {
-  question: "This is the fifth test question. B is the correct answer.",
-  a: "a tricky, but ultimately incorrect answer",
-  b: "a correct answer",
-  c: "a wrong answer",
-  d: "another incorrect answer",
-  answer: "b",
-};
-
-var question5 = {
-  question: "This is the sixth test question. A is the correct answer.",
-  a: "a correct answer",
-  b: "a tricky, but ultimately incorrect answer",
-  c: "a wrong answer",
-  d: "another incorrect answer",
-  answer: "a",
-};
-
-// question array. An array of objects, whee!
-var questionSelector = [
-  question0,
-  question1,
-  question2,
-  question3,
-  question4,
-  question5,
-];
 
 // we only want to show the submission form to players who have completed the quiz.
 function showSaveScore() {
@@ -118,12 +53,16 @@ function showSaveScore() {
   }
 }
 
-// functions to hide the various sections - very duplicative, but helps when deciding which parts of the page to show
+// functions to hide the various sections.
+// Some redundancy, but helps when deciding which parts of the page to show
 function hideScores() {
   scoresSct.setAttribute("style", "display:none");
 }
 function hideQuiz() {
   quizSct.setAttribute("style", "display:none");
+}
+function hideQuestion(){
+    questionContainerEl.setAttribute("style", "display:none");
 }
 function hideStart() {
   startSct.setAttribute("style", "display:none");
@@ -134,14 +73,18 @@ function showScores() {
 function showQuiz() {
   quizSct.setAttribute("style", "display:initial");
 }
+function showQuestion() {
+    questionContainerEl.setAttribute("style", "display:initial");
+}
 function showStart() {
   startSct.setAttribute("style", "display:initial");
 }
 
+
 // set instructions to start text with quiz timer variable.
 function setStartText() {
   startTextEl.textContent =
-    "Please press 'Start Quiz' to begin. You will have " +
+    "Please press 'Take Quiz' to begin. You will have " +
     quizTimer +
     " seconds to complete the quiz.";
 }
@@ -155,18 +98,27 @@ function resetQuestions() {
 
 //this ends the quiz and shows the score section. Bonus points for time remaining!
 function endQuiz() {
+  // These functions update the page to display the correct sections and to generate the current score list
   hideQuiz();
-  hideStart();
+  showStart();
   showScores();
   displayScoreList();
-  player.complete = true; // mark player as completing the quiz
-  showSaveScore(); // show the score submission form
-  clearInterval(timerInterval); // cancel remaining time
-  timerEl.innerHTML = "Test completed."; // overwrite timer element to clear remaining time display
 
+  // mark player as completing the quiz
+  player.complete = true;
+
+  // show the score submission form
+  showSaveScore();
+
+  // cancel remaining time
+  clearInterval(timerInterval);
+
+  // overwrite timer element to clear remaining time display
+  timerEl.innerHTML = "Test completed.";
+
+  // Update total score to player object. Max score gets bonus points equal to remaining seconds.
   if (score === questionSelector.length * 5) {
-    // max score gets bonus points equal to remaining seconds.
-    player.totalScore = Number(score) + Number(bonus); // update score to player.
+    player.totalScore = Number(score) + Number(bonus); 
     finalScoreEl.innerHTML =
       "Wow! You got a perfect score! You receive " +
       bonus +
@@ -209,10 +161,10 @@ function answerQuestion(outcome) {
   } else {
     feedbackEl.innerHTML = "Sorry, your answer was not correct.";
   }
-  hideQuiz();
+  hideQuestion();
   setTimeout(function () {
     feedbackEl.innerHTML = "";
-    showQuiz();
+    showQuestion();
     nextQuestion();
   }, answerDelay * 1000);
 }
@@ -229,22 +181,29 @@ function startQuiz() {
 }
 
 // Clears the high score list and rebuilds it.
+// Also sorts the scores by totalScore from highest to lowest.
+// From https://www.scaler.com/topics/javascript-sort-an-array-of-objects/
 function displayScoreList() {
   highScoreListEl.textContent = "";
-  console.log(highScoreList);
-  var highScoreListSort = highScoreList.sort((b, a) => a.totalScore < b.totalScore ? -1 : (a.totalScore > b.totalScore ? 1 : 0)) //hopefully sort the scores by value? From https://www.scaler.com/topics/javascript-sort-an-array-of-objects/
-  console.log(highScoreListSort);
+  var highScoreListSort = highScoreList.sort((b, a) =>
+    a.totalScore < b.totalScore ? -1 : a.totalScore > b.totalScore ? 1 : 0
+  );
+
+  // This loop runs through the high score list and builds list elements with separate <p> divs for each.
   for (var i = 0; i < highScoreListSort.length; i++) {
     var li = document.createElement("li");
 
     var rank = document.createElement("p");
     rank.textContent = i + 1;
+    rank.setAttribute("class", "rank");
 
     var initials = document.createElement("p");
     initials.textContent = highScoreListSort[i].initials;
+    initials.setAttribute("class", "player");
 
     var score = document.createElement("p");
     score.textContent = highScoreListSort[i].totalScore;
+    score.setAttribute("class", "score");
 
     li.appendChild(rank);
     li.appendChild(initials);
@@ -256,7 +215,6 @@ function displayScoreList() {
 }
 
 // add player score to high score list if they have completed the quiz.
-
 function addPlayerScore() {
   if (player.complete === true) {
     highScoreList.push(player);
@@ -264,20 +222,14 @@ function addPlayerScore() {
   }
 }
 
-// updates the score list from storage, saves it to a new array, adds the player's score if they finished a game, and then pushes the updated list back to storage.
+// updates the score list from storage, saves it to a new array,
+// adds the player's score if they finished a game, and then pushes the updated list back to storage.
 function updateScoreList() {
   var storedHighScoreList = JSON.parse(localStorage.getItem("highScoreList"));
-  //   console.log("1", storedHighScoreList);
-  //   console.log("1", highScoreList);
   if (storedHighScoreList !== null) {
     highScoreList = storedHighScoreList;
-    // console.log("2", storedHighScoreList);
-    // console.log("2", highScoreList);
   }
   addPlayerScore();
-  // console.log("3", storedHighScoreList);
-  // console.log("3", highScoreList);
-  highScoreList.sort((x, y) => x.score < y.score); //hopefully sort the scores by value? From https://www.scaler.com/topics/javascript-sort-an-array-of-objects/
   localStorage.setItem("highScoreList", JSON.stringify(highScoreList));
   displayScoreList();
 }
@@ -299,13 +251,13 @@ function submitInitials(event) {
 // calculates the potential bonus score for a full clear as well.
 function timer() {
   var seconds = quizTimer;
-  timerEl.innerHTML = "Time remaining: " + seconds + " seconds."; // resolve delay in timer appearing due to interval timing
   timerInterval = setInterval(function () {
+    timerEl.innerHTML = "Time remaining: " + seconds + " seconds.";
     seconds--;
     bonus = Math.floor(seconds + answerDelay); // padding bonus to make up for the delay after answering a question. Rounds down.
-    timerEl.innerHTML = "Time remaining: " + seconds + " seconds.";
+
     // console.log(seconds);
-    if (seconds <= 0) {
+    if (seconds < 0) {
       clearInterval(timerInterval);
       timerEl.innerHTML = "Time is Up!";
       endQuiz();
@@ -332,16 +284,16 @@ startBtn.addEventListener("click", function () {
 });
 
 // event listener for the reset button - it does the same as the start quiz button.
-resetBtn.addEventListener("click", function () {
-  startQuiz();
-});
+// resetBtn.addEventListener("click", function () {
+//   startQuiz();
+// });
 
 // go directly to the high scores list from the nav. This will cancel the test if you are currently taking it.
 showScoreEl.addEventListener("click", function () {
   clearInterval(timerInterval);
   timerEl.innerHTML = "";
   hideQuiz();
-  hideStart();
+  showStart();
   showScores();
   showSaveScore();
   updateScoreList();
