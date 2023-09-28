@@ -1,4 +1,4 @@
-var quizTimer = 60; // this will update all timing related functions, edit this to adjust test duration.
+var quizTimer = 90; // this will update all timing related functions, edit this to adjust test duration.
 var answerDelay = 2; // this updates the delay for showing an answer and the padding for bonus points.
 
 // initialize global variables for tracking quiz progress and score.
@@ -29,7 +29,7 @@ var feedbackEl = document.querySelector("#feedback");
 var startTextEl = document.querySelector("#startText");
 var saveScoreEl = document.querySelector("#saveScore");
 var highScoreListEl = document.querySelector("#highScoreList");
-var questionContainerEl = document.querySelector("#questionContainer")
+var questionContainerEl = document.querySelector("#questionContainer");
 
 // button selectors
 var startBtn = document.querySelector("#startQuiz");
@@ -61,8 +61,8 @@ function hideScores() {
 function hideQuiz() {
   quizSct.setAttribute("style", "display:none");
 }
-function hideQuestion(){
-    questionContainerEl.setAttribute("style", "display:none");
+function hideQuestion() {
+  questionContainerEl.setAttribute("style", "display:none");
 }
 function hideStart() {
   startSct.setAttribute("style", "display:none");
@@ -74,23 +74,33 @@ function showQuiz() {
   quizSct.setAttribute("style", "display:initial");
 }
 function showQuestion() {
-    questionContainerEl.setAttribute("style", "display:initial");
+  questionContainerEl.setAttribute("style", "display:flex");
 }
 function showStart() {
   startSct.setAttribute("style", "display:initial");
 }
 
-
 // set instructions to start text with quiz timer variable.
 function setStartText() {
   startTextEl.textContent =
-    "Please press 'Take Quiz' to begin. You will have " +
+    "Welcome to the Javascript basic knowledge quiz. Please press 'Take Quiz' to begin. You will have " +
     quizTimer +
     " seconds to complete the quiz.";
 }
 
-// re-initialize the questions to start the test over.
+function shuffleQuestions() {
+  var j, k;
+  for (var i = 0; i < questionSelector.length; i++) {
+    j = Math.floor(Math.random() * questionSelector.length);
+    k = questionSelector[i];
+    questionSelector[i] = questionSelector[j];
+    questionSelector[j] = k;
+  }
+}
+
+// reset the index and shuffle the questions to start the test over.
 function resetQuestions() {
+  shuffleQuestions();
   currentQuestionIndex = 0;
   currentQuestion = questionSelector[currentQuestionIndex];
   score = 0;
@@ -118,7 +128,7 @@ function endQuiz() {
 
   // Update total score to player object. Max score gets bonus points equal to remaining seconds.
   if (score === questionSelector.length * 5) {
-    player.totalScore = Number(score) + Number(bonus); 
+    player.totalScore = Number(score) + Number(bonus);
     finalScoreEl.innerHTML =
       "Wow! You got a perfect score! You receive " +
       bonus +
@@ -133,10 +143,10 @@ function endQuiz() {
 // This function sets the question elements and buttons based on the content of the current question.
 function askQuestions() {
   questionEl.innerHTML = currentQuestion.question;
-  aBtn.innerHTML = "A: " + currentQuestion.a;
-  bBtn.innerHTML = "B: " + currentQuestion.b;
-  cBtn.innerHTML = "C: " + currentQuestion.c;
-  dBtn.innerHTML = "D: " + currentQuestion.d;
+  aBtn.textContent = "A: " + currentQuestion.a;
+  bBtn.textContent = "B: " + currentQuestion.b;
+  cBtn.textContent = "C: " + currentQuestion.c;
+  dBtn.textContent = "D: " + currentQuestion.d;
 }
 
 //increments the next question through the index, or ends the quiz if there are no more questions.

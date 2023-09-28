@@ -1,86 +1,89 @@
-body{
-    
-    font-family: "Century Gothic", CenturyGothic, AppleGothic, sans-serif;
-    background-color: #222222;
-    color: white;
-    margin: auto;
-    padding: 5px;
-    text-align: center;
-
+body {
+  font-family: "Century Gothic", CenturyGothic, AppleGothic, sans-serif;
+  background-color: #222222;
+  color: white;
+  margin: auto;
+  padding: 5px;
+  text-align: center;
+  line-height: 1.5;
 }
 
 h1 {
-    font-size: 150%;
-    padding: 10px;
+  font-size: 150%;
+  padding: 10px;
 }
 
 .highScoreContainer {
-    width: 250px;
-margin: auto;
+  width: 250px;
+  margin: auto;
 }
 
 button {
-    background-color: #ababab;
-    padding: 5px;
-    margin: 5px;
-    border-radius: 8px;
+  background-color: #ababab;
+  padding: 5px;
+  margin: 5px;
+  border-radius: 8px;
 }
 
 button:hover {
-    background-color: rgb(221, 221, 221);
+  background-color: rgb(221, 221, 221);
 }
 
-#saveScore {
-    padding: 10px;
+#saveScore,
+#finalScore {
+  padding: 10px;
 }
 
 #startText {
-margin: auto;
-    text-align: center;
-    padding: 20px;
+  margin: auto;
+  text-align: center;
+  padding: 20px;
 }
 
-#questionNumber {
-    display: flex;
-    flex-flow: column nowrap;
-    align-items: flex-start;
-    /* justify-content: left; */
-
+#questionContainer {
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: flex-start;
+  max-width: 800px;
+  min-width: 400px;
+  margin: auto;
+  /* justify-content: left; */
 }
 
 .highScoreContainer {
-    border: 2px solid black;
-    border-radius: 8px;
-    z-index: 10;
+  border: 2px solid black;
+  border-radius: 8px;
+  z-index: 10;
 }
 
-li, .scoreHeaderContainer {
-    display:flex;
-    flex-flow: row nowrap;
-    justify-content: space-around;
-    max-width: 250px;
-    border-bottom: 1px black solid;
-    border-top-right-radius: 8px;
-    border-top-left-radius: 8px;
+li,
+.scoreHeaderContainer {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-around;
+  max-width: 250px;
+  border-bottom: 1px black solid;
+  border-top-right-radius: 8px;
+  border-top-left-radius: 8px;
 }
 
 .scoreHeaderContainer {
-    font-weight: bold;
-    background-color: #333333;
-    text-align: center;
+  font-weight: bold;
+  background-color: #333333;
+  text-align: center;
 }
 
-.rank, .score {
-    text-align: right;
+.rank,
+.score {
+  text-align: right;
 }
 
 .player {
-    background-color: #4f4f4f;
+  background-color: #4f4f4f;
 }
 
-
-p {
-    text-align: left;
-    width: 200px;
-    padding: 5px;
+.highScoreContainer p {
+  text-align: left;
+  width: 200px;
+  padding: 5px;
 }
