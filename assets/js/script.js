@@ -30,7 +30,8 @@ var startTextEl = document.querySelector("#startText");
 var saveScoreEl = document.querySelector("#saveScore");
 var highScoreListEl = document.querySelector("#highScoreList");
 var questionContainerEl = document.querySelector("#questionContainer");
-var scoreHeaderContainerEl = document.querySelector("#scoreHeaderContainer")
+var scoreHeaderContainerEl = document.querySelector("#scoreHeaderContainer");
+var showScoreEl = document.querySelector("#visitHighScores");
 
 // button selectors
 var startBtn = document.querySelector("#startQuiz");
@@ -38,7 +39,7 @@ var aBtn = document.querySelector("#a");
 var bBtn = document.querySelector("#b");
 var cBtn = document.querySelector("#c");
 var dBtn = document.querySelector("#d");
-var showScoreEl = document.querySelector("#visitHighScores");
+var resetBtn = document.querySelector("#resetHighScores");
 
 // section selectors
 var startSct = document.querySelector("#startButton");
@@ -196,9 +197,10 @@ function startQuiz() {
 // From https://www.scaler.com/topics/javascript-sort-an-array-of-objects/
 function displayScoreList() {
   highScoreListEl.textContent = "";
+  if (highScoreList !== null) {
   var highScoreListSort = highScoreList.sort((b, a) =>
     a.totalScore < b.totalScore ? -1 : a.totalScore > b.totalScore ? 1 : 0
-  );
+  );}
 
   // This loop runs through the high score list and builds list elements with separate <p> divs for each.
   for (var i = 0; i < highScoreListSort.length; i++) {
@@ -226,10 +228,10 @@ function displayScoreList() {
   // we give the end of the high score list special border properties.
   if (highScoreListEl.lastChild !== null) {
     highScoreListEl.lastChild.setAttribute("class", "last");
-    scoreHeaderContainerEl.setAttribute("class", "")
+    scoreHeaderContainerEl.setAttribute("class", "");
   } else {
-    document
-      scoreHeaderContainerEl.setAttribute("class", "last");
+    document;
+    scoreHeaderContainerEl.setAttribute("class", "last");
   }
 }
 
@@ -298,6 +300,13 @@ for (var i = 0; i < answerButtonEl.length; i++) {
 // event listener for starting the quiz
 startBtn.addEventListener("click", function () {
   startQuiz();
+});
+
+// event listener to reset high scores.
+resetBtn.addEventListener("click", function () {
+  localStorage.removeItem("highScoreList");
+  highScoreList = []
+  updateScoreList();
 });
 
 // go directly to the high scores list from the nav. This will cancel the test if you are currently taking it.
