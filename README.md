@@ -32,68 +32,38 @@ WHEN the game is over
 THEN I can save my initials and my score
 ```
 
-## Mock-Up
+## Example: 
 
-The following animation demonstrates the application functionality:
+A screenshot of the quiz while it is running: 
 
-![A user clicks through an interactive coding quiz, then enters initials to save the high score before resetting and starting over.](./Assets/04-web-apis-homework-demo.gif)
+![](./assets/image/example.PNG)
 
-## Grading Requirements
 
-> **Note**: If a Challenge assignment submission is marked as “0”, it is considered incomplete and will not count towards your graduation requirements. Examples of incomplete submissions include the following:
->
-> * A repository that has no code
->
-> * A repository that includes a unique name but nothing else
->
-> * A repository that includes only a README file but nothing else
->
-> * A repository that only includes starter code
+## Developer Notes:
 
-This Challenge is graded based on the following criteria: 
+This is a web-first design for a quiz that will test basic knowledge of Javascript. There are ten questions, and the user is given 90 seconds to complete the quiz. 
 
-### Technical Acceptance Criteria: 40%
+The general design philosophy is to have event listeners attached to buttons that kick off various function trees to create the dynamic page. The page is divided into four main sections that are dynamically hidden or shown based on the current state of the quiz. 
 
-* Satisfies all of the preceding acceptance criteria.
+Clicking on the start button will start the timer, which runs using a global interval. Several functions need to be able to end this, so this makes it useful to stop the timer while it is not needed. 
 
-### Deployment: 32%
+Questions are stored as an array of question objects on a separate script page, which is loaded first to ensure that it is available when the quiz starts. When entering the test, the questions in the array of objects for the questions are randomly shuffled to provide additional challenge. 
 
-* Application deployed at live URL.
+The question answer buttons are mapped to each result with a loop, which compares the answer to the ID of the button that was clicked to determine if it was correct or incorrect. Once this is recorded, the index for the quiz section is incremented and the next question is loaded. Since the operation of the quiz is event-based, this is a better solution than a loop.
 
-* Application loads with no errors.
+For each correct answer, the player is awarded 5 points. If they get all of the questions correct, they will get bonus points equal to the number of seconds remaining when they answered the final question. 
 
-* Application GitHub URL submitted.
+The high score screen is automatically shown after the quiz is complete. There is some logic to determine the score and if the player has finished the quiz, which is updated to the player object. If the conditions are met, the form will be shown, otherwise it is hidden.  
 
-* GitHub repository contains application code.
+When the initials are stored they are forced to uppercase and trimmed to 3 characters, then the player object is pushed to the high score list, which is then stored in local memory. After this the player object is re-initiated with default values for another quiz session. 
 
-### Application Quality: 15%
+Resetting the high scores requires deleting the local memory storage, as well as re-initializing the locally stored list as an array with no content. This duplicates the setting when the page is loaded for the first time in a new browser.
 
-* Application user experience is intuitive and easy to navigate.
+When creating the high score list, the list is first sorted highest to lowest, and then dynamic elements are created using Javascript corresponding to the entries in the stored player object array.
 
-* Application user interface style is clean and polished.
+ The last item in the high score list gets some special formatting, so there is logic to add an additional class to this item. This gets applied to the header row if the high score list is empty. 
 
-* Application resembles the mock-up functionality provided in the Challenge instructions.
+ Finally, we re-use the start button to start another quiz cycle at the bottom of the high score page. This ensures that the quiz runs the same each time and does not go off the rails, so to speak. 
 
-### Repository Quality: 13%
+ I did a quick evaluation of the memory usage of the quiz duing a cycle, and it appears that there are no execution loops, so this performs well and does not lead to instability regardless of the number of quiz iterations completed. 
 
-* Repository has a unique name.
-
-* Repository follows best practices for file structure and naming conventions.
-
-* Repository follows best practices for class/id naming conventions, indentation, quality comments, etc.
-
-* Repository contains multiple descriptive commit messages.
-
-* Repository contains quality readme file with description, screenshot, and link to deployed application.
-
-## Review
-
-You are required to submit BOTH of the following for review:
-
-* The URL of the functional, deployed application.
-
-* The URL of the GitHub repository, with a unique name and a readme describing the project.
-
----
-
-© 2023 edX Boot Camps LLC. Confidential and Proprietary. All Rights Reserved.
