@@ -6,6 +6,7 @@ var answerDelay = 2; // this updates the delay for showing an answer and the pad
 var currentQuestionIndex;
 var currentQuestion;
 var score;
+var seconds;
 var bonus;
 var highScoreList = [];
 
@@ -171,7 +172,9 @@ function answerQuestion(outcome) {
     score += 5;
     feedbackEl.innerHTML = "Your answer was correct!";
   } else {
-    feedbackEl.innerHTML = "Sorry, your answer was not correct.";
+    seconds -= 5
+    timerEl.innerHTML = "Time remaining: " + seconds + " seconds.";
+    feedbackEl.innerHTML = "Sorry, your answer was not correct. <br> 5 second penalty applied to timer.";
   }
   hideQuestion();
   setTimeout(function () {
@@ -269,7 +272,7 @@ function submitInitials(event) {
 // timer for the quiz. If the timer runs out, the quiz will end.
 // calculates the potential bonus score for a full clear as well.
 function timer() {
-  var seconds = quizTimer;
+  seconds = quizTimer;
   // Update display before interval is set.
   // If not present, there is an awkward delay in the timer appearing.
   timerEl.innerHTML = "Time remaining: " + seconds + " seconds.";
