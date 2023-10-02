@@ -38,6 +38,9 @@ A screenshot of the quiz while it is running:
 
 ![](./assets/image/example.PNG)
 
+## Deployed Application: 
+
+The application can be accessed at: https://shagomir.github.io/challenge_week_04_javascript_quiz/
 
 ## Developer Notes:
 
