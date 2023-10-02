@@ -91,6 +91,7 @@ function setStartText() {
     " seconds to complete the quiz.";
 }
 
+// shuffle the question array to randomize the order of the questions.
 function shuffleQuestions() {
   var j, k;
   for (var i = 0; i < questionSelector.length; i++) {
@@ -172,9 +173,10 @@ function answerQuestion(outcome) {
     score += 5;
     feedbackEl.innerHTML = "Your answer was correct!";
   } else {
-    seconds -= 5
+    seconds -= 5;
     timerEl.innerHTML = "Time remaining: " + seconds + " seconds.";
-    feedbackEl.innerHTML = "Sorry, your answer was not correct. <br> 5 second penalty applied to timer.";
+    feedbackEl.innerHTML =
+      "Sorry, your answer was not correct. <br> 5 second penalty applied to timer.";
   }
   hideQuestion();
   setTimeout(function () {
@@ -199,11 +201,16 @@ function startQuiz() {
 // Also sorts the scores by totalScore from highest to lowest.
 // From https://www.scaler.com/topics/javascript-sort-an-array-of-objects/
 function displayScoreList() {
+  // clear the elements from the existing HTML
   highScoreListEl.textContent = "";
+
+  // ensure there are high scores (saved player objects in the array),
+  //if there are sort them from highest to lowest based on the totalScore property.
   if (highScoreList !== null) {
-  var highScoreListSort = highScoreList.sort((b, a) =>
-    a.totalScore < b.totalScore ? -1 : a.totalScore > b.totalScore ? 1 : 0
-  );}
+    var highScoreListSort = highScoreList.sort((b, a) =>
+      a.totalScore < b.totalScore ? -1 : a.totalScore > b.totalScore ? 1 : 0
+    );
+  }
 
   // This loop runs through the high score list and builds list elements with separate <p> divs for each.
   for (var i = 0; i < highScoreListSort.length; i++) {
@@ -231,9 +238,10 @@ function displayScoreList() {
   // we give the end of the high score list special border properties.
   if (highScoreListEl.lastChild !== null) {
     highScoreListEl.lastChild.setAttribute("class", "last");
+    // removes the rounded corners on the header if they were previously displayed.
     scoreHeaderContainerEl.setAttribute("class", "");
   } else {
-    document;
+    // if there are no scores on the list, this adds the rounded border to the headers.
     scoreHeaderContainerEl.setAttribute("class", "last");
   }
 }
@@ -308,7 +316,7 @@ startBtn.addEventListener("click", function () {
 // event listener to reset high scores.
 resetBtn.addEventListener("click", function () {
   localStorage.removeItem("highScoreList");
-  highScoreList = []
+  highScoreList = [];
   updateScoreList();
 });
 

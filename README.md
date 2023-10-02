@@ -51,7 +51,7 @@ Questions are stored as an array of question objects on a separate script page, 
 
 The question answer buttons are mapped to each result with a loop, which compares the answer to the ID of the button that was clicked to determine if it was correct or incorrect. Once this is recorded, the index for the quiz section is incremented and the next question is loaded. Since the operation of the quiz is event-based, this is a better solution than a loop.
 
-For each correct answer, the player is awarded 5 points. If they get all of the questions correct, they will get bonus points equal to the number of seconds remaining when they answered the final question. 
+For each correct answer, the player is awarded 5 points. If they get all of the questions correct, they will get bonus points equal to the number of seconds remaining when they answered the final question. If they answer the question incorrectly, 5 seconds will be removed from the timer. 
 
 The high score screen is automatically shown after the quiz is complete. There is some logic to determine the score and if the player has finished the quiz, which is updated to the player object. If the conditions are met, the form will be shown, otherwise it is hidden.  
 
